@@ -1,0 +1,32 @@
+{
+  "name": "LINE Bot with Langchain",
+  "description": "Quick LINEBot with Langchain",
+  "repository": "https://github.com/kkdai/linebot-langchain",
+  "keywords": [
+    "python",
+    "linebot",
+    "Sample"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-python.git"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "ChatGptToken": {
+      "description": "ChatGPT Access Token",
+      "required": true
+    },
+    "ChannelAccessToken": {
+      "description": "Channel Access Token",
+      "required": true
+    },
+    "ChannelSecret": {
+      "description": "Channel Secret",
+      "required": true
+    }
+  }
+}
