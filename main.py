@@ -20,10 +20,7 @@ import aiohttp
 from fastapi import Request, FastAPI, HTTPException
 
 from langchain.chat_models import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
 from langchain.chains import ConversationChain
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferWindowMemory
 
 
@@ -62,7 +59,8 @@ line_bot_api = AsyncLineBotApi(channel_access_token, async_http_client)
 parser = WebhookParser(channel_secret)
 
 # Langchain
-llm = ChatOpenAI(temperature=0.0)
+llm = ChatOpenAI(temperature=0.9, model='gpt-3.5-turbo')
+
 memory = ConversationBufferWindowMemory(k=3)
 conversation = ConversationChain(
     llm=llm,
@@ -100,11 +98,11 @@ async def handle_callback(request: Request):
         if not isinstance(event.message, TextMessage):
             continue
 
-        result = conversation({"question": event.message.text})
+        ret = conversation.predict(input=event.message.text)
 
         await line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=result)
+            TextSendMessage(text=ret)
         )
 
     return 'OK'
