@@ -38,7 +38,7 @@ import openai
 
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())  # read local .env file
-openai.api_key = os.environ['ChatGptToken']
+openai.api_key = os.environ['OPENAI_API_KEY']
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('ChannelSecret', None)
@@ -92,7 +92,7 @@ async def handle_callback(request: Request):
 
         await line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=customer_response)
+            TextSendMessage(text=customer_response.content)
         )
 
     return 'OK'
