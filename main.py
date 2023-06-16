@@ -21,6 +21,11 @@ from fastapi import Request, FastAPI, HTTPException
 
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
+from langchain.chains import ConversationChain
+from langchain.memory import ConversationBufferWindowMemory
+from langchain.chat_models import ChatOpenAI
+from langchain.memory import ConversationBufferWindowMemory
+
 
 from linebot import (
     AsyncLineBotApi, WebhookParser
@@ -55,7 +60,15 @@ session = aiohttp.ClientSession()
 async_http_client = AiohttpAsyncHttpClient(session)
 line_bot_api = AsyncLineBotApi(channel_access_token, async_http_client)
 parser = WebhookParser(channel_secret)
-chat = ChatOpenAI(temperature=0.0)
+
+# Langchain
+llm = ChatOpenAI(temperature=0.0)
+memory = ConversationBufferWindowMemory(k=3)
+conversation = ConversationChain(
+    llm=llm,
+    memory=memory,
+    verbose=False
+)
 
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
@@ -87,12 +100,11 @@ async def handle_callback(request: Request):
         if not isinstance(event.message, TextMessage):
             continue
 
-        # out = get_completion(event.message.text)
-        customer_response = chat(event.message.text)
+        result = conversation({"question": event.message.text})
 
         await line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=customer_response.content)
+            TextSendMessage(text=result)
         )
 
     return 'OK'
