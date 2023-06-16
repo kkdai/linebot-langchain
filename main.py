@@ -19,6 +19,9 @@ import aiohttp
 
 from fastapi import Request, FastAPI, HTTPException
 
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+
 from linebot import (
     AsyncLineBotApi, WebhookParser
 )
@@ -29,6 +32,13 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
+
+import os
+import openai
+
+from dotenv import load_dotenv, find_dotenv
+_ = load_dotenv(find_dotenv())  # read local .env file
+openai.api_key = os.environ['ChatGptToken']
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('ChannelSecret', None)
@@ -45,6 +55,17 @@ session = aiohttp.ClientSession()
 async_http_client = AiohttpAsyncHttpClient(session)
 line_bot_api = AsyncLineBotApi(channel_access_token, async_http_client)
 parser = WebhookParser(channel_secret)
+chat = ChatOpenAI(temperature=0.0)
+
+
+def get_completion(prompt, model="gpt-3.5-turbo"):
+    messages = [{"role": "user", "content": prompt}]
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages,
+        temperature=0,
+    )
+    return response.choices[0].message["content"]
 
 
 @app.post("/callback")
@@ -66,9 +87,12 @@ async def handle_callback(request: Request):
         if not isinstance(event.message, TextMessage):
             continue
 
+        # out = get_completion(event.message.text)
+        customer_response = chat(event.message.text)
+
         await line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=event.message.text)
+            TextSendMessage(text=customer_response)
         )
 
     return 'OK'

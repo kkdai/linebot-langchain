@@ -18,16 +18,12 @@ Installation and Usage
 
 You can choose [Heroku](https://www.heroku.com/) or [Render](http://render.com/)
 
-#### 2(A) Deploy this on Heroku
+#### 2 Deploy this on Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 - Input `Channel Secret` and `Channel Access Token`.
 - Remember your heroku, ID.
-
-#### 2(B) Deploy this on Rener
-
-[![Deploy to Render](http://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 ### 3. Go to LINE Bot Dashboard, setup basic API
 
