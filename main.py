@@ -86,10 +86,11 @@ async def handle_callback(request: Request):
         if not isinstance(event.message, TextMessage):
             continue
 
+        out = get_completion(event.message.text)
+
         await line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=event.message.text),
-            TextSendMessage(text=get_completion(event.message.text))
+            TextSendMessage(text=out)
         )
 
     return 'OK'
