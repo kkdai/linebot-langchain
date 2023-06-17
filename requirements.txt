@@ -5,3 +5,4 @@ langchain
 openai
 yfinance
 pydantic
+tiktoken

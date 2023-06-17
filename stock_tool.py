@@ -1,4 +1,7 @@
+from langchain.tools import BaseTool
+from typing import Optional, Type
 from pydantic import BaseModel, Field
+
 import yfinance as yf
 
 
