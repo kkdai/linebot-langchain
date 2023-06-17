@@ -14,16 +14,19 @@
 
 import os
 import sys
+import json
 
 import aiohttp
 
 from fastapi import Request, FastAPI, HTTPException
 
 from langchain.chat_models import ChatOpenAI
-from langchain.chains import ConversationChain
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.tools import MoveFileTool, format_tool_to_openai_function
-from langchain.schema import HumanMessage, AIMessage, ChatMessage, FunctionMessage
+from langchain.agents import AgentType
+from langchain.agents import initialize_agent, Tool
+from langchain.schema import HumanMessage
+
+from stock_price import StockPriceTool
+from stock_peformace import StockPercentageChangeTool, StockGetBestPerformingTool
 
 from linebot import (
     AsyncLineBotApi, WebhookParser
@@ -35,17 +38,9 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
-from stock_tool import StockPriceTool
-from stock_tool import get_stock_price
-
-import os
-import openai
-import json
 
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())  # read local .env file
-# This is for OpenAI package, however Langchain will access environment directly.
-openai.api_key = os.environ['OPENAI_API_KEY']
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('ChannelSecret', None)
@@ -65,26 +60,12 @@ parser = WebhookParser(channel_secret)
 
 # Langchain (you must use 0613 model to use OpenAI functions.)
 model = ChatOpenAI(model="gpt-3.5-turbo-0613")
-
-# Prepare openai.functions format.
-tools = [StockPriceTool()]
-functions = [format_tool_to_openai_function(t) for t in tools]
-
-# test function
-print("func=")
-print(functions[0])
-
-# A demo code how to call OpenAI completion
-
-
-def get_completion(prompt, model="gpt-3.5-turbo"):
-    messages = [{"role": "user", "content": prompt}]
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=messages,
-        temperature=0,
-    )
-    return response.choices[0].message["content"]
+tools = [StockPriceTool(), StockPercentageChangeTool(),
+         StockGetBestPerformingTool()]
+open_ai_agent = initialize_agent(tools,
+                                 model,
+                                 agent=AgentType.OPENAI_FUNCTIONS,
+                                 verbose=False)
 
 
 @app.post("/callback")
@@ -106,16 +87,7 @@ async def handle_callback(request: Request):
         if not isinstance(event.message, TextMessage):
             continue
 
-        # Use OpenAI functions to parse user intent of his message text.
-        hm = HumanMessage(content=event.message.text)
-        ai_message = model.predict_messages([hm], functions=functions)
-
-        # parse args parsing result from OpenAI.
-        _args = json.loads(
-            ai_message.additional_kwargs['function_call'].get('arguments'))
-
-        # Call the 3rd party API get_stock_price to get stock price.
-        tool_result = tools[0](_args)
+        tool_result = open_ai_agent.run(event.message.text)
 
         await line_bot_api.reply_message(
             event.reply_token,
