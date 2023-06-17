@@ -63,7 +63,7 @@ line_bot_api = AsyncLineBotApi(channel_access_token, async_http_client)
 parser = WebhookParser(channel_secret)
 
 # Langchain
-llm = ChatOpenAI(temperature=0.9, model='gpt-3.5-turbo')
+model = ChatOpenAI(model="gpt-3.5-turbo-0613")
 
 # Prepare openai.functions
 tools = [StockPriceTool()]
@@ -72,12 +72,13 @@ functions = [format_tool_to_openai_function(t) for t in tools]
 # test function
 print("func=")
 print(functions[0])
-memory = ConversationBufferWindowMemory(k=5)
-conversation = ConversationChain(
-    llm=llm,
-    memory=memory,
-    verbose=False
-)
+
+# memory = ConversationBufferWindowMemory(k=5)
+# conversation = ConversationChain(
+#     llm=model,
+#     memory=memory,
+#     verbose=False
+# )
 
 
 # A demo code how to call OpenAI completion
@@ -113,7 +114,7 @@ async def handle_callback(request: Request):
         print(event.message.text)
         hm = HumanMessage(content=event.message.text)
         print(hm)
-        ai_message = llm.predict_messages([hm], functions=functions)
+        ai_message = model.predict_messages([hm], functions=functions)
         print(ai_message)
 
         # parse args
