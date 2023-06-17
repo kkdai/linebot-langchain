@@ -111,8 +111,9 @@ async def handle_callback(request: Request):
             continue
 
         print(event.message.text)
-        ai_message = llm.predict_messages(
-            [HumanMessage(content=event.message.text)], functions=functions)
+        hm = HumanMessage(content=event.message.text)
+        print(hm)
+        ai_message = llm.predict_messages([hm], functions=functions)
         print(ai_message)
 
         # parse args
