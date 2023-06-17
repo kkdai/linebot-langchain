@@ -16,18 +16,27 @@ Installation and Usage
 - Open LINE OA manager from "Basic Setting" tab.
 - Go to Reply setting on OA manager, enable "webhook"
 
-### 2. Deploy this on Web Platform
+### 2. To obtain an OpenAI API token
+
+- Register for an account on the OpenAI website at <https://openai.com/api/>.
+- Once you have an account, you can find your [API Keys](https://platform.openai.com/account/api-keys) in the account settings page.
+- If you want to use the OpenAI API for development, you can find more information and instructions in the API documentation page.
+- Please note that the OpenAI API is only available to users who meet certain criteria.
+- You can find more information about the usage conditions and limitations of the API in the API documentation page.
+
+### 3. Deploy this on Web Platform
 
 You can choose [Heroku](https://www.heroku.com/) or [Render](http://render.com/)
 
-#### 2 Deploy this on Heroku
+### 4. Deploy this on Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 - Input `Channel Secret` and `Channel Access Token`.
+- Input [OpenAI API Key](https://platform.openai.com/account/api-keys) in `OPENAI_API_KEY`.
 - Remember your heroku, ID.
 
-### 3. Go to LINE Bot Dashboard, setup basic API
+### 5. Go to LINE Bot Dashboard, setup basic API
 
 - Setup your basic account information. Here is some info you will need to know.
 - `Callback URL`: <https://{YOUR_HEROKU_SERVER_ID}.herokuapp.com/callback>
