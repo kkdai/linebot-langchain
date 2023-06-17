@@ -48,3 +48,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 __pycache__/main.cpython-310.pyc
+.DS_Store
