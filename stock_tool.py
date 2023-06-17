@@ -1,4 +1,5 @@
 from langchain.tools import BaseTool
+from langchain.agents import AgentType
 from typing import Optional, Type
 from pydantic import BaseModel, Field
 

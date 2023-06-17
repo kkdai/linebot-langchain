@@ -22,7 +22,8 @@ from fastapi import Request, FastAPI, HTTPException
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferWindowMemory
-
+from langchain.tools import MoveFileTool, format_tool_to_openai_function
+from langchain.schema import HumanMessage, AIMessage, ChatMessage, FunctionMessage
 
 from linebot import (
     AsyncLineBotApi, WebhookParser
@@ -39,6 +40,7 @@ from stock_tool import get_stock_price
 
 import os
 import openai
+import json
 
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())  # read local .env file
@@ -63,6 +65,13 @@ parser = WebhookParser(channel_secret)
 # Langchain
 llm = ChatOpenAI(temperature=0.9, model='gpt-3.5-turbo')
 
+# Prepare openai.functions
+tools = [StockPriceTool()]
+functions = [format_tool_to_openai_function(t) for t in tools]
+
+# test function
+print("func=")
+print(functions[0])
 memory = ConversationBufferWindowMemory(k=5)
 conversation = ConversationChain(
     llm=llm,
@@ -101,12 +110,21 @@ async def handle_callback(request: Request):
         if not isinstance(event.message, TextMessage):
             continue
 
-        print(get_stock_price('AAPL'))
-        ret = conversation.predict(input=event.message.text)
+        print(event.message.text)
+        ai_message = llm.predict_messages(
+            [HumanMessage(content=event.message.text)], functions=functions)
+        print(ai_message)
+
+        # parse args
+        _args = json.loads(
+            ai_message.additional_kwargs['function_call'].get('arguments'))
+        print(_args)
+        tool_result = tools[0](_args)
+        print(tool_result)
 
         await line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=ret)
+            TextSendMessage(text=tool_result)
         )
 
     return 'OK'
