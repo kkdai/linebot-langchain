@@ -34,6 +34,8 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
+from stock_tool import StockPriceTool
+from stock_tool import get_stock_price
 
 import os
 import openai
@@ -99,6 +101,7 @@ async def handle_callback(request: Request):
         if not isinstance(event.message, TextMessage):
             continue
 
+        print(get_stock_price('AAPL'))
         ret = conversation.predict(input=event.message.text)
 
         await line_bot_api.reply_message(

@@ -3,3 +3,5 @@ fastapi
 uvicorn[standard]
 langchain
 openai
+yfinance
+pydantic
