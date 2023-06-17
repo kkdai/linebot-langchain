@@ -1,6 +1,8 @@
 LINE Bot with Langchain in Python
 ==============
 
+![](./img/bot.jpg)
+
 Installation and Usage
 =============
 
