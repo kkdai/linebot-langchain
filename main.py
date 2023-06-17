@@ -44,6 +44,7 @@ import json
 
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())  # read local .env file
+# This is for OpenAI package, however Langchain will access environment directly.
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 # get channel_secret and channel_access_token from your environment variable
@@ -62,10 +63,10 @@ async_http_client = AiohttpAsyncHttpClient(session)
 line_bot_api = AsyncLineBotApi(channel_access_token, async_http_client)
 parser = WebhookParser(channel_secret)
 
-# Langchain
+# Langchain (you must use 0613 model to use OpenAI functions.)
 model = ChatOpenAI(model="gpt-3.5-turbo-0613")
 
-# Prepare openai.functions
+# Prepare openai.functions format.
 tools = [StockPriceTool()]
 functions = [format_tool_to_openai_function(t) for t in tools]
 
@@ -73,15 +74,9 @@ functions = [format_tool_to_openai_function(t) for t in tools]
 print("func=")
 print(functions[0])
 
-# memory = ConversationBufferWindowMemory(k=5)
-# conversation = ConversationChain(
-#     llm=model,
-#     memory=memory,
-#     verbose=False
-# )
-
-
 # A demo code how to call OpenAI completion
+
+
 def get_completion(prompt, model="gpt-3.5-turbo"):
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
@@ -111,18 +106,16 @@ async def handle_callback(request: Request):
         if not isinstance(event.message, TextMessage):
             continue
 
-        print(event.message.text)
+        # Use OpenAI functions to parse user intent of his message text.
         hm = HumanMessage(content=event.message.text)
-        print(hm)
         ai_message = model.predict_messages([hm], functions=functions)
-        print(ai_message)
 
-        # parse args
+        # parse args parsing result from OpenAI.
         _args = json.loads(
             ai_message.additional_kwargs['function_call'].get('arguments'))
-        print(_args)
+
+        # Call the 3rd party API get_stock_price to get stock price.
         tool_result = tools[0](_args)
-        print(tool_result)
 
         await line_bot_api.reply_message(
             event.reply_token,
