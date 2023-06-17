@@ -16,8 +16,8 @@
     }
   ],
   "env": {
-    "ChatGptToken": {
-      "description": "ChatGPT Access Token",
+    "OPENAI_API_KEY": {
+      "description": "OpenAI Access Token",
       "required": true
     },
     "ChannelAccessToken": {
