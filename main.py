@@ -61,7 +61,7 @@ parser = WebhookParser(channel_secret)
 # Langchain
 llm = ChatOpenAI(temperature=0.9, model='gpt-3.5-turbo')
 
-memory = ConversationBufferWindowMemory(memory_key="chat_history")
+memory = ConversationBufferWindowMemory(k=5)
 conversation = ConversationChain(
     llm=llm,
     memory=memory,
@@ -69,7 +69,7 @@ conversation = ConversationChain(
 )
 
 
-# A demo code how to call OpenAI completion directly.
+# A demo code how to call OpenAI completion
 def get_completion(prompt, model="gpt-3.5-turbo"):
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
