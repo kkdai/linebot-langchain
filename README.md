@@ -1,4 +1,4 @@
-LINE Bot with Langchain in Python
+Utilizing a LINE Bot integrated with LangChain in Python to assist with stock price inquiries
 ==============
 
 ![](./img/bot2.jpg)
