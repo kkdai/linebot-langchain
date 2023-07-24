@@ -1,7 +1,7 @@
 {
   "name": "LINE Bot with Langchain",
   "description": "Quick LINEBot with Langchain",
-  "repository": "https://github.com/kkdai/linebot-langchain",
+  "repository": "https://github.com/Paul60209/linebot-langchain",
   "keywords": [
     "python",
     "linebot",
