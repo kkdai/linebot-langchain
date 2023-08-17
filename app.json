@@ -17,15 +17,16 @@
   ],
   "env": {
     "OPENAI_API_KEY": {
-      "description": "OpenAI Access Token",
+      "description": "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",
       "required": true
     },
     "ChannelAccessToken": {
-      "description": "Channel Access Token",
+      "description": "UazjU3hWfNDavTc2eWCW8mEUgxne5/iXnN+JJBPGFnUkI7UvvMuMenQ0hl1JAvfWTxWtYphYMGKp/D23jjmXNjJHZPnyszb5VPz+/bWfKWboZ1Txclqngzhsha2yoO/44ega4FVjngDgm93D/lh/1gdB04t89/1O/w1cDnyilFU=
+",
       "required": true
     },
     "ChannelSecret": {
-      "description": "Channel Secret",
+      "description": "13c6ef35026147424db4ccb7c687d21e",
       "required": true
     }
   }
