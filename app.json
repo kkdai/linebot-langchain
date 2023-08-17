@@ -21,8 +21,7 @@
       "required": true
     },
     "ChannelAccessToken": {
-      "description": "UazjU3hWfNDavTc2eWCW8mEUgxne5/iXnN+JJBPGFnUkI7UvvMuMenQ0hl1JAvfWTxWtYphYMGKp/D23jjmXNjJHZPnyszb5VPz+/bWfKWboZ1Txclqngzhsha2yoO/44ega4FVjngDgm93D/lh/1gdB04t89/1O/w1cDnyilFU=
-",
+      "description": "UazjU3hWfNDavTc2eWCW8mEUgxne5/iXnN+JJBPGFnUkI7UvvMuMenQ0hl1JAvfWTxWtYphYMGKp/D23jjmXNjJHZPnyszb5VPz+/bWfKWboZ1Txclqngzhsha2yoO/44ega4FVjngDgm93D/lh/1gdB04t89/1O/w1cDnyilFU=",
       "required": true
     },
     "ChannelSecret": {
