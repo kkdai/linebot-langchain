@@ -1,7 +1,7 @@
 line-bot-sdk
 fastapi
 uvicorn[standard]
-langchain
+langchain>=0.0.308
 openai
 yfinance
 pydantic
