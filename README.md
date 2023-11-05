@@ -34,9 +34,13 @@ You can choose [Heroku](https://www.heroku.com/) or [Render](http://render.com/)
 
 - Input `Channel Secret` and `Channel Access Token`.
 - Input [OpenAI API Key](https://platform.openai.com/account/api-keys) in `OPENAI_API_KEY`.
-- Remember your heroku, ID.
+- Remember your heroku, ID
 
-### 5. Go to LINE Bot Dashboard, setup basic API
+### 5. Deploy this on Render.com
+
+[![Deploy to Render](http://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+### 6. Go to LINE Bot Dashboard, setup basic API
 
 - Setup your basic account information. Here is some info you will need to know.
 - `Callback URL`: <https://{YOUR_HEROKU_SERVER_ID}.herokuapp.com/callback>
