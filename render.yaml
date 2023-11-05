@@ -1,0 +1,18 @@
+services:
+  # A Docker web service
+  - type: web
+    name: linebot-langchain
+    runtime: python
+    plan: free
+    autoDeploy: false
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host=0.0.0.0 --port=${PORT:-5000}
+    envVars:
+    - key: PYTHON_VERSION
+      value: 3.10.12
+    - key: ChannelAccessToken
+      sync: false
+    - key: ChannelSecret
+      sync: false
+    - key: OPENAI_API_KEY
+      sync: false
