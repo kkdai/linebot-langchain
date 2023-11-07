@@ -1,4 +1,4 @@
-line-bot-sdk
+line-bot-sdk==3.5.0
 fastapi
 uvicorn[standard]
 langchain==0.0.308
