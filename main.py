@@ -24,7 +24,8 @@ from langchain.agents import AgentType
 from langchain.agents import initialize_agent
 
 from stock_price import StockPriceTool
-from stock_peformace import StockPercentageChangeTool, StockGetBestPerformingTool
+from stock_peformace import StockPercentageChangeTool
+from stock_peformace import StockGetBestPerformingTool
 
 from linebot import (
     AsyncLineBotApi, WebhookParser

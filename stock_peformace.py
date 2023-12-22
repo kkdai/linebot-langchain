@@ -15,7 +15,13 @@ class StockChangePercentageCheckInput(BaseModel):
 
 class StockPercentageChangeTool(BaseTool):
     name = "get_price_change_percent"
-    description = "Useful for when you need to find out the percentage change in a stock's value. You should input the stock ticker used on the yfinance API and also input the number of days to check the change over"
+    description = (
+        "Useful for when you need to find out the percentage change "
+        "in a stock's value. "
+        "You should input the stock ticker used on the yfinance API "
+        "and also input the "
+        "number of days to check the change over"
+    )
 
     def _run(self, stockticker: str, days_ago: int):
         price_change_response = get_price_change_percent(stockticker, days_ago)
@@ -34,13 +40,22 @@ class StockBestPerformingInput(BaseModel):
     """Input for Stock ticker check. for percentage check"""
 
     stocktickers: List[str] = Field(...,
-                                    description="Ticker symbols for stocks or indices")
+                                    description=(
+                                        "Ticker symbols for "
+                                        "stocks or indices"
+                                    ))  # Close the parenthesis here
     days_ago: int = Field(..., description="Int number of days to look back")
 
 
 class StockGetBestPerformingTool(BaseTool):
     name = "get_best_performing"
-    description = "Useful for when you need to the performance of multiple stocks over a period. You should input a list of stock tickers used on the yfinance API and also input the number of days to check the change over"
+    description = (
+        "Useful for when you need to the performance of multiple "
+        "stocks over a period. "
+        "You should input a list of stock "
+        "tickers used on the yfinance API "
+        "and also input the number of days to check the change over"
+    )
 
     def _run(self, stocktickers: List[str], days_ago: int):
         price_change_response = get_best_performing(stocktickers, days_ago)
